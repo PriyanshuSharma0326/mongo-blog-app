@@ -1,0 +1,53 @@
+.blog-box {
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 12px 24px rgba(10, 10, 10, 25);
+    }
+
+    .blog-title {
+        padding: 0.25rem;
+
+        h2 {
+            font-size: 1.65rem;
+        }
+    }
+
+    .blog-description {
+        padding: 0.25rem;
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--grey-4);
+        }
+    }
+
+    .blog-content {
+        padding: 0.25rem;
+
+        h2 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+    }
+
+    .blog-meta {
+        padding: 0.25rem;
+        display: flex;
+
+        h2 {
+            margin-left: auto;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+    }
+}

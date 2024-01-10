@@ -1,0 +1,43 @@
+.navbar-container {
+    position: fixed;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    z-index: 10;
+
+    .navbar {
+        display: flex;
+        align-items: center;
+        padding: 1rem 5rem;
+        background-color: var(--dark);
+        height: 5rem;
+        width: 100%;
+        z-index: inherit;
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-left: auto;
+    
+            li {
+                list-style: none;
+                cursor: pointer;
+
+                .nav-link {
+                    display: flex;
+                    gap: 0.75rem;
+                    line-height: 0;
+                }
+            }
+        }
+    }
+}
