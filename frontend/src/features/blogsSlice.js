@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { readAllBlogsHandler } from '../lib/utils/utils';
 
 const initialStateValue = {
     blogs: [],
@@ -8,11 +8,14 @@ const initialStateValue = {
 };
 
 const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/v1/blogs`);
-        return response.data.data;
-    } catch (error) {
-        throw error;
+    const response = await readAllBlogsHandler();
+    
+    if(response.success) {
+        return response.data;
+    }
+    else {
+        alert(response.message);
+        return;
     }
 });
 

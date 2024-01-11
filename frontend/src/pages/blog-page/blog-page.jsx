@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './blog-page.style.scss';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { readSingleBlogHandler } from '../../lib/utils/utils';
 
 function BlogPage() {
     const param = useParams();
@@ -9,11 +9,13 @@ function BlogPage() {
     const [blog, setBlog] = useState({});
 
     const getBlog = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/v1/blogs/${param.id}`);
-            setBlog(response.data.data);
-        } catch (error) {
-            throw error;
+        const response = await readSingleBlogHandler(param.id);
+
+        if(response.success) {
+            setBlog(response.data);
+        }
+        else {
+            alert(response.message);
         }
     }
 

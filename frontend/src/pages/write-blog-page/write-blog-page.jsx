@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import './write-blog-page.scss';
-import axios from 'axios';
-import qs from 'qs';
 
 import Button from '../../components/button/button.component';
 import FormInput from '../../components/form-input/form-input.component';
 import TextArea from '../../components/textarea/textarea';
 import { useNavigate } from 'react-router-dom';
+import { createBlogHandler } from '../../lib/utils/utils';
 
 function WriteBlogPage() {
     const defaultFormFields = {
@@ -61,27 +60,15 @@ function WriteBlogPage() {
 
         if(Object.keys(validationErrors).length === 0) {
             setFormErrors(defaultFormErrors);
-            try {
-                const response = await axios.post(
-                    "http://localhost:5000/api/v1/blogs/write",
-                    qs.stringify(formInputs),
-                    {
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                    }
-                );
-                if(response.status === 200) {
-                    navigate('/blogs');
-                    window.location.reload();
-                }
-                else {
-                    validationErrors.blogContent = response.data.message;
-                    setFormErrors(validationErrors);
-                    return;
-                }
+            const response = await createBlogHandler(formInputs);
+
+            if(response.status === 200) {
+                navigate('/blogs');
+                window.location.reload();
             }
-            catch(err) {
+            else {
+                validationErrors.blogContent = response.data.message;
+                setFormErrors(validationErrors);
                 return;
             }
         }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import './confirmation-box.style.scss';
 import { ConfirmationBoxContext } from '../../context/confirmation-box-context';
 import Button from '../button/button.component';
-import axios from 'axios';
+import { deleteBlogHandler } from '../../lib/utils/utils';
 
 function useOutsideAlerter(ref) {
     const { setIsBoxOpen, setBlogIdToDelete } = useContext(ConfirmationBoxContext);
@@ -38,26 +38,15 @@ function ConfirmationBox() {
         setIsBoxOpen(false);
     }
 
-    const handleDeleteProduct = async () => {
-        try {
-            const response = await axios.delete(
-                `http://localhost:5000/api/v1/blogs/delete/${blogIdToDelete}`,
-                {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                }
-            );
-            if(response.status === 200) {
-                setIsBoxOpen(false);
-                window.location.reload();
-            }
-            else {
-                alert(response.data.message);
-                return;
-            }
+    const handleDeleteBlogYesButton = async () => {
+        const response = await deleteBlogHandler(blogIdToDelete);
+
+        if(response.status === 200) {
+            setIsBoxOpen(false);
+            window.location.reload();
         }
-        catch(err) {
+        else {
+            alert(response.data.message);
             return;
         }
     }
@@ -80,7 +69,7 @@ function ConfirmationBox() {
                     <Button 
                         type='button' 
                         buttonText='Yes' 
-                        onClick={handleDeleteProduct} 
+                        onClick={handleDeleteBlogYesButton} 
                     />
                 </div>
             </div>

@@ -7,8 +7,7 @@ import Button from '../../components/button/button.component';
 import FormInput from '../../components/form-input/form-input.component';
 import TextArea from '../../components/textarea/textarea';
 
-import axios from 'axios';
-import qs from 'qs';
+import { editBlogHandler } from '../../lib/utils/utils';
 
 function EditBlogPage() {
     const param = useParams();
@@ -76,27 +75,15 @@ function EditBlogPage() {
 
         if(Object.keys(validationErrors).length === 0) {
             setFormErrors(defaultFormErrors);
-            try {
-                const response = await axios.put(
-                    `http://localhost:5000/api/v1/blogs/edit/${param.id}`,
-                    qs.stringify(formInputs),
-                    {
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded",
-                        },
-                    }
-                );
-                if(response.status === 200) {
-                    alert(response.data.message);
-                    navigate('/blogs')
-                }
-                else {
-                    validationErrors.blogContent = response.data.message;
-                    setFormErrors(validationErrors);
-                    return;
-                }
+            const response = await editBlogHandler(formInputs, param.id);
+
+            if(response.status === 200) {
+                navigate('/blogs');
+                window.location.reload();
             }
-            catch(err) {
+            else {
+                validationErrors.blogContent = response.data.message;
+                setFormErrors(validationErrors);
                 return;
             }
         }
