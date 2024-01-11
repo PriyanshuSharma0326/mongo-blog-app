@@ -9,9 +9,15 @@ const getAllBlogs = async (req, res) => {
     }
 }
 
-const getSingleBlog = (req, res) => {
+const getSingleBlog = async (req, res) => {
     const { id } = req.params;
-    res.status(201).send({ message: `Single blog post - ${id}!` });
+    const item = await Blogs.findById(id);
+    if(!item) {
+        res.status(400).json({ success: false, message: `Blog with id=${id} not found!` });
+    }
+    else {
+        res.status(200).json({ success: true, data: item });
+    }
 }
 
 const writeBlog = (req, res) => {
@@ -25,14 +31,30 @@ const writeBlog = (req, res) => {
     });
 }
 
-const editBlog = (req, res) => {
+const editBlog = async (req, res) => {
     const { id } = req.params;
-    res.status(201).send({ message: `Edit this blog post - ${id}!` });
+    try {
+        const response = await Blogs.findByIdAndUpdate(id, req.body);
+        if (response) {
+            res.status(200).json({ success: true, message: 'Blog update successful!' });
+        }
+    }
+    catch (err) {
+        res.status(400).json({ success: false, message: err });
+    }
 }
 
-const deleteBlog = (req, res) => {
+const deleteBlog = async (req, res) => {
     const { id } = req.params;
-    res.status(201).send({ message: `Delete this blog post - ${id}!` });
+    try {
+        const response = await Blogs.findByIdAndDelete(id);
+        if (response) {
+            res.status(200).json({ success: true, message: 'Blog deleted!' })
+        }
+    }
+    catch (err) {
+        res.status(400).json({ success: false, message: err });
+    }
 }
 
 export {

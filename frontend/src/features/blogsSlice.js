@@ -11,7 +11,6 @@ const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
     try {
         const response = await axios.get(`http://localhost:5000/api/v1/blogs`);
         return response.data.data;
-        // console.log(response.data);
     } catch (error) {
         throw error;
     }

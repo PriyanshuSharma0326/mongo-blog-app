@@ -9,6 +9,9 @@ import BlogRoute from './routes/blog/blog.route';
 import BlogsHome from './pages/blogs-home/blogs-home';
 import WriteBlogPage from './pages/write-blog-page/write-blog-page';
 import { fetchBlogs } from './features/blogsSlice';
+import BlogPage from './pages/blog-page/blog-page';
+import EditBlogPage from './pages/edit-blog-page/edit-blog-page';
+import { ConfirmationBoxContextProvider } from './context/confirmation-box-context';
 
 function App() {
     const dispatch = useDispatch();
@@ -24,12 +27,18 @@ function App() {
                 
                 {/* <Route path='blogs' element={<Error />} /> */}
 
-                <Route path='blogs' element={<BlogRoute />}>
+                <Route path='blogs' element={
+                    <ConfirmationBoxContextProvider>
+                        <BlogRoute />
+                    </ConfirmationBoxContextProvider>
+                }>
                     <Route index element={<BlogsHome />} />
 
                     <Route path='create' element={<WriteBlogPage />} />
 
-                    {/* <Route path='register' element={<SignUp />} /> */}
+                    <Route path='edit/:id' element={<EditBlogPage />} />
+
+                    <Route path=':id' element={<BlogPage />} />
                 </Route>
 
                 {/* <Route path='accounts' element={<Error />} /> */}

@@ -5,14 +5,19 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    height: fit-content;
 
     &:hover {
-        cursor: pointer;
-        box-shadow: 0 12px 24px rgba(10, 10, 10, 25);
+        box-shadow: 0 4px 8px rgba(10, 10, 10, 25);
     }
 
     .blog-title {
         padding: 0.25rem;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
 
         h2 {
             font-size: 1.65rem;
@@ -42,6 +47,24 @@
     .blog-meta {
         padding: 0.25rem;
         display: flex;
+        align-items: center;
+
+        .blog-controls {
+            display: flex;
+            gap: 1rem;
+
+            .MuiSvgIcon-root {
+                border-radius: 50%;
+                padding: 0.35rem;
+                font-size: 2rem;
+                line-height: 0;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: var(--grey-7);
+                }
+            }
+        }
 
         h2 {
             margin-left: auto;

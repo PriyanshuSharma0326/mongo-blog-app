@@ -4,7 +4,6 @@ import './navbar.style.scss';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar() {
-
     return (
         <div className='navbar-container'>
             <nav className='navbar'>
@@ -26,14 +25,14 @@ function Navbar() {
                         </Link>
                     </li>
 
-                    {/* <li>
+                    <li>
                         <Link 
-                            to='/account/bookmarks' 
+                            to='/blogs/create' 
                             className='nav-link' 
                         >
-                            Bookmarks
+                            Create
                         </Link>
-                    </li> */}
+                    </li>
                 </ul>
             </nav>
         </div>

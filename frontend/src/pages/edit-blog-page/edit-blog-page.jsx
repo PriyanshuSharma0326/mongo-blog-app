@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
-import './write-blog-page.scss';
-import axios from 'axios';
-import qs from 'qs';
+import React, { useEffect, useState } from 'react';
+import './edit-blog-page.style.scss'
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Button from '../../components/button/button.component';
 import FormInput from '../../components/form-input/form-input.component';
 import TextArea from '../../components/textarea/textarea';
-import { useNavigate } from 'react-router-dom';
 
-function WriteBlogPage() {
+import axios from 'axios';
+import qs from 'qs';
+
+function EditBlogPage() {
+    const param = useParams();
+
+    const blogs = useSelector((state) => state.blogs.blogs);
+
     const defaultFormFields = {
         title: '',
         description: '',
@@ -31,6 +37,15 @@ function WriteBlogPage() {
         const { name, value } = e.target;
         setFormInputs({...formInputs, [name]: value});
     }
+    
+    useEffect(() => {
+        let blog = blogs.find((item) => item._id === param.id);
+        setFormInputs({
+            title: blog.title,
+            description: blog.description,
+            blogContent: blog.blogContent
+        });
+    }, [param, blogs]);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -62,8 +77,8 @@ function WriteBlogPage() {
         if(Object.keys(validationErrors).length === 0) {
             setFormErrors(defaultFormErrors);
             try {
-                const response = await axios.post(
-                    "http://localhost:5000/api/v1/blogs/write",
+                const response = await axios.put(
+                    `http://localhost:5000/api/v1/blogs/edit/${param.id}`,
                     qs.stringify(formInputs),
                     {
                         headers: {
@@ -72,8 +87,8 @@ function WriteBlogPage() {
                     }
                 );
                 if(response.status === 200) {
-                    navigate('/blogs');
-                    window.location.reload();
+                    alert(response.data.message);
+                    navigate('/blogs')
                 }
                 else {
                     validationErrors.blogContent = response.data.message;
@@ -88,9 +103,9 @@ function WriteBlogPage() {
     }
 
     return (
-        <div className='write-blog-page'>
-            <div className='blog-form-container'>
-                <h2>Write a Blog Post</h2>
+        <div className='edit-blog-page-container'>
+            <div className='blog-edit-form-container'>
+                <h2>Edit Blog Post</h2>
 
                 <form onSubmit={submitHandler}>
                     <FormInput 
@@ -143,4 +158,4 @@ function WriteBlogPage() {
     )
 }
 
-export default WriteBlogPage;
+export default EditBlogPage;
